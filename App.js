@@ -144,15 +144,14 @@ export default class App extends Component {
       if (!pickerResult.cancelled) {
         uploadResponse = await uploadImageAsync(pickerResult.uri);
         uploadResult = await uploadResponse.json();
-
         this.setState({
           image: uploadResult.location,
         });
       }
     } catch (e) {
-      console.log({ uploadResponse });
-      console.log({ uploadResult });
-      console.log({ e });
+      // console.log({ uploadResponse });
+      // console.log({ uploadResult });
+      // console.log({ e });
       alert('Upload failed, sorry :(');
     } finally {
       this.setState({
@@ -163,16 +162,7 @@ export default class App extends Component {
 }
 
 async function uploadImageAsync(uri) {
-  // let apiUrl = 'https://file-upload-example-backend-dkhqoilqqn.now.sh/upload';
   const apiUrl = 'http://192.168.1.106:5000/uploadText';
-  // Uncomment this if you want to experiment with local server
-
-  // Note: if (Constants.isDevice) {
-  //   apiUrl = `https://your-ngrok-subdomain.ngrok.io/upload`;
-  // } else {
-  //   apiUrl = `http://localhost:5000/upload`;
-  // }
-
   let uriParts = uri.split('.');
   let fileType = uriParts[uriParts.length - 1];
 
@@ -191,8 +181,12 @@ async function uploadImageAsync(uri) {
       'Content-Type': 'multipart/form-data',
     },
   };
-  console.log('hello');
-  return fetch(apiUrl, options);
+  let response;
+  async function getData() {
+    response = await fetch(apiUrl, options);
+  }
+  getData();
+  return response;
 }
 
 const styles = StyleSheet.create({
