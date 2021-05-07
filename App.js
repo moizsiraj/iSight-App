@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import * as Speech from 'expo-speech';
 import * as Permissions from 'expo-permissions';
 // import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from 'expo-image-picker';
@@ -147,6 +148,7 @@ export default class App extends Component {
         this.setState({
           image: uploadResult.location,
         });
+        speak(response);
       }
     } catch (e) {
       // console.log({ uploadResponse });
@@ -159,6 +161,13 @@ export default class App extends Component {
       });
     }
   };
+}
+
+var response;
+
+function speak(text) {
+  const thingToSay = '1';
+  Speech.speak(text);
 }
 
 async function uploadImageAsync(uri) {
@@ -181,11 +190,12 @@ async function uploadImageAsync(uri) {
       'Content-Type': 'multipart/form-data',
     },
   };
-  let response;
+
   async function getData() {
     response = await fetch(apiUrl, options);
     const json = await response.json();
-    console.log(json);
+    response = json.txt;
+    console.log(json.txt);
   }
   await getData();
   return fetch(apiUrl, options);
