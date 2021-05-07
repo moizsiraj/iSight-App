@@ -184,9 +184,11 @@ async function uploadImageAsync(uri) {
   let response;
   async function getData() {
     response = await fetch(apiUrl, options);
+    const json = await response.json();
+    console.log(json);
   }
-  getData();
-  return response;
+  await getData();
+  return fetch(apiUrl, options);
 }
 
 const styles = StyleSheet.create({
